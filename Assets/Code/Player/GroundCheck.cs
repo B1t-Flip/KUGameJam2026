@@ -25,6 +25,7 @@ public class GroundCheck : MonoBehaviour {
 
   private void OnTriggerStay2D(Collider2D other){
     // use inverted ifs to reduce nesting
+    player.canFlip = other.gameObject.CompareTag("Waterline");
     if (jumpFrameCount > 0 || !groundTags.Contains(other.gameObject.tag)) return;
     if(!player.grounded) player.EmitLandingPoof();
     player.grounded = true;

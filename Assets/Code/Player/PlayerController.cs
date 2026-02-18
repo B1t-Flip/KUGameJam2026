@@ -1,19 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : FlippableObject {
   // Animator variables stored as something less expensive to search for
   private static readonly int Grounded = Animator.StringToHash("Grounded");
   private static readonly int XVel = Animator.StringToHash("XVel");
   private static readonly int YVel = Animator.StringToHash("YVel");
   
-  [SerializeField] private float acceleration, maxSpeed, jumpHeight, gravity;
+  [SerializeField] private float acceleration, maxSpeed, jumpHeight;
   [SerializeField, Range(0,1)] private float drag;
   
-  private bool reversed;
   private float speed;
-  [HideInInspector] public bool grounded;
+  [HideInInspector] public bool grounded, canFlip;
   
   #region Controls
 
@@ -36,7 +34,7 @@ public class PlayerController : MonoBehaviour {
   public event Notify PlayerJumped;
   private void OnJump(InputAction.CallbackContext ctx) {
     if (!grounded) return;
-    rb.linearVelocity += (reversed ? Vector2.down : Vector2.up) * jumpHeight;
+    rb.linearVelocity += (flipped ? Vector2.down : Vector2.up) * jumpHeight;
     grounded = false;
     poof.transform.localScale = new Vector3(dir < 0 ? 1 : -1, 1, 1);
     poof.Emit(1);
@@ -46,12 +44,20 @@ public class PlayerController : MonoBehaviour {
   }
   
   private void OnMove(InputAction.CallbackContext ctx) {
-    float direction = ctx.ReadValue<Vector2>().x;
-    dir = direction switch {
+    float horizontal = ctx.ReadValue<Vector2>().x;
+    float vertical = ctx.ReadValue<Vector2>().y;
+    dir = horizontal switch {
       >= .25f => 1,
       <= -.25f => -1,
       _ => 0
     };
+    if (vertical < -.25 && canFlip) {
+      Flip(-1);
+      if(flipped) splash1.Emit(10);
+      else splash2.Emit(10);
+      poof.GetComponent<ParticleSystemRenderer>().flip = new Vector3(0, flipped ? 1 : 0, 0);
+    }
+    
     if (dir == 0) return;
     sprite.flipX = dir < 0;
     if (!grounded) return;
@@ -61,16 +67,20 @@ public class PlayerController : MonoBehaviour {
 
   #endregion
   
-  private Rigidbody2D rb;
   private SpriteRenderer sprite;
   private Animator anim;
   private ParticleSystem poof;
+  private ParticleSystem splash1;
+  private ParticleSystem splash2;
 
-  private void Start() {
+  protected override void Start() {
+    base.Start();
     rb = GetComponent<Rigidbody2D>();
     sprite = GetComponent<SpriteRenderer>();
     anim = GetComponent<Animator>();
-    poof = GetComponentInChildren<ParticleSystem>();
+    poof = GetComponentsInChildren<ParticleSystem>()[0];
+    splash1 = GetComponentsInChildren<ParticleSystem>()[1];
+    splash2 = GetComponentsInChildren<ParticleSystem>()[2];
   }
   
   private void FixedUpdate() {
@@ -80,10 +90,8 @@ public class PlayerController : MonoBehaviour {
 
   private void Movement() {
     speed = Mathf.Clamp(speed + dir * acceleration, -maxSpeed, maxSpeed) * (1 - drag);
-
     Vector2 targetVel = Vector2.right * speed;
-    targetVel.y += (reversed ? 1 : -1) * gravity + rb.linearVelocity.y;
-
+    targetVel.y = ApplyGravity(rb.linearVelocity.y);
     rb.linearVelocity = targetVel;
   }
 

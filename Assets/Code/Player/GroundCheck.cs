@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GroundCheck : MonoBehaviour {
+  private PlayerController player;
+  private int coyoteFrameCount, jumpFrameCount;
+  private bool coyoteTime;
+  [SerializeField] private List<string> groundTags;
+  [SerializeField] private int coyoteFrames;
+
+  private void Awake() => player = GetComponentInParent<PlayerController>();
+  private void StartJumpFrameCount() => jumpFrameCount = 5;
+  private void OnEnable() => player.PlayerJumped += StartJumpFrameCount;
+  private void OnDisable() => player.PlayerJumped -= StartJumpFrameCount;
+  
+  // you ever try to jump off a ledge, but you happened to go off of it just before you pressed jump, so you just fall to the floor?
+  // coyote frames give the player a couple frames of leeway after walking off the edge so something like that doesn't happen.
+  private void FixedUpdate() {
+    if (jumpFrameCount > 0) jumpFrameCount--;
+    if (!coyoteTime) return;
+    if(coyoteFrameCount > 0) coyoteFrameCount--;
+    else coyoteTime = player.grounded = false;
+  }
+
+  private void OnTriggerStay2D(Collider2D other){
+    // use inverted ifs to reduce nesting
+    if (jumpFrameCount > 0 || !groundTags.Contains(other.gameObject.tag)) return;
+    if(!player.grounded) player.EmitLandingPoof();
+    player.grounded = true;
+  }
+
+  private void OnTriggerExit2D(Collider2D other) {
+    if (!groundTags.Contains(other.gameObject.tag) || !player.grounded) return;
+    coyoteFrameCount = coyoteFrames;
+    coyoteTime = true;
+  }
+}

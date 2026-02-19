@@ -1,6 +1,6 @@
 using UnityEngine;
 public class SoundManager : MonoBehaviour {
-  [SerializeField] private AudioSource[] 
+  [SerializeField] private AudioSource[] sounds;
   
   public enum SoundType {
     DOOR_CLOSE, DOOR_OPEN, JUMP, LAND, 

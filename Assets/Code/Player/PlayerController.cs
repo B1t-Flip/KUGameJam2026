@@ -14,15 +14,15 @@ public class PlayerController : FlippableObject {
   #region Controls
 
   [SerializeField] private InputActionReference jump, move, flip;
-  public int dir;
+  public static int dir;
   
   public delegate void Notify();
   public delegate void NotifyIndexed(int i);
   public delegate void NotifyBool(bool i);
-  public event NotifyIndexed PlayerJumped;
-  public event NotifyIndexed PlayerMoved;
-  public event NotifyBool PlayerFlipped;
-  public event Notify PlayerLanded;
+  public static event NotifyIndexed PlayerJumped;
+  public static event NotifyIndexed PlayerMoved;
+  public static event NotifyBool PlayerFlipped;
+  public static event Notify PlayerLanded;
   
   private void OnEnable() {
     jump.action.performed += OnJump;
@@ -58,7 +58,7 @@ public class PlayerController : FlippableObject {
     if (!grounded) return;
   }
   private void OnFlip(InputAction.CallbackContext ctx) {
-    if (!canFlip || !flipOver) return; 
+    if (!canFlip || !flipOver || PlayerPickupController.carryingSomething) return; 
     PlayerFlipped?.Invoke(flipped);
     Flip(transform.localScale.y);
   }

@@ -1,110 +1,86 @@
+using System.Dynamic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : FlippableObject {
-  // Animator variables stored as something less expensive to search for
-  private static readonly int Grounded = Animator.StringToHash("Grounded");
-  private static readonly int XVel = Animator.StringToHash("XVel");
-  private static readonly int YVel = Animator.StringToHash("YVel");
   
-  [SerializeField] private float acceleration, maxSpeed, jumpHeight;
+  [SerializeField] private float acceleration, jumpHeight;
+  public float maxSpeed;
   [SerializeField, Range(0,1)] private float drag;
-  
   private float speed;
-  [HideInInspector] public bool grounded, canFlip;
+  [HideInInspector] public bool grounded;
+  private SpriteRenderer sprite;
   
   #region Controls
 
-  [SerializeField] private InputActionReference jump, move;
-  private int dir;
+  [SerializeField] private InputActionReference jump, move, flip;
+  public int dir;
+  
+  public delegate void Notify();
+  public delegate void NotifyIndexed(int i);
+  public delegate void NotifyBool(bool i);
+  public event NotifyIndexed PlayerJumped;
+  public event NotifyIndexed PlayerMoved;
+  public event NotifyBool PlayerFlipped;
+  public event Notify PlayerLanded;
   
   private void OnEnable() {
     jump.action.performed += OnJump;
     move.action.performed += OnMove;
+    flip.action.performed += OnFlip;
     move.action.canceled += OnMove;
   }
 
   private void OnDisable() {
     jump.action.performed -= OnJump;
     move.action.performed -= OnMove;
+    flip.action.performed -= OnFlip;
     move.action.canceled -= OnMove;
   }
-
-  public delegate void Notify();
-  public event Notify PlayerJumped;
+  public void Landed() => PlayerLanded?.Invoke();
+  
   private void OnJump(InputAction.CallbackContext ctx) {
     if (!grounded) return;
-    rb.linearVelocity += (flipped ? Vector2.down : Vector2.up) * jumpHeight;
+    rb.linearVelocity = new Vector3(rb.linearVelocity.x, (flipped ? -1 : 1) * jumpHeight);
     grounded = false;
-    poof.transform.localScale = new Vector3(dir < 0 ? 1 : -1, 1, 1);
-    poof.Emit(1);
-    // the ground check is subscribed to this,
-    // it tells it to keep grounded false so the player can't double jump
-    PlayerJumped?.Invoke();
+    PlayerJumped?.Invoke(dir);
   }
-  
   private void OnMove(InputAction.CallbackContext ctx) {
-    float horizontal = ctx.ReadValue<Vector2>().x;
-    float vertical = ctx.ReadValue<Vector2>().y;
+    float horizontal = ctx.ReadValue<float>();
     dir = horizontal switch {
       >= .25f => 1,
       <= -.25f => -1,
       _ => 0
     };
-    if (vertical < -.25 && canFlip) {
-      Flip(-1);
-      if(flipped) splash1.Emit(10);
-      else splash2.Emit(10);
-      poof.GetComponent<ParticleSystemRenderer>().flip = new Vector3(0, flipped ? 1 : 0, 0);
-    }
-    
     if (dir == 0) return;
     sprite.flipX = dir < 0;
+    PlayerMoved?.Invoke(dir);
     if (!grounded) return;
-    poof.transform.localScale = new Vector3(dir < 0 ? 1 : -1, 1, 1);
-    poof.Emit(1);
   }
-
+  private void OnFlip(InputAction.CallbackContext ctx) {
+    if (!canFlip || !flipOver) return; 
+    PlayerFlipped?.Invoke(flipped);
+    Flip(transform.localScale.y);
+  }
+  
   #endregion
   
-  private SpriteRenderer sprite;
-  private Animator anim;
-  private ParticleSystem poof;
-  private ParticleSystem splash1;
-  private ParticleSystem splash2;
-
   protected override void Start() {
     base.Start();
     rb = GetComponent<Rigidbody2D>();
     sprite = GetComponent<SpriteRenderer>();
-    anim = GetComponent<Animator>();
-    poof = GetComponentsInChildren<ParticleSystem>()[0];
-    splash1 = GetComponentsInChildren<ParticleSystem>()[1];
-    splash2 = GetComponentsInChildren<ParticleSystem>()[2];
   }
   
-  private void FixedUpdate() {
-    Movement();
-    Animation();
-  }
+  private void FixedUpdate() => Movement();
 
   private void Movement() {
-    speed = Mathf.Clamp(speed + dir * acceleration, -maxSpeed, maxSpeed) * (1 - drag);
+    if (!flipOver) speed = 0;
+    else speed = Mathf.Clamp(speed + dir * acceleration, -maxSpeed, maxSpeed) * (1 - drag);
     Vector2 targetVel = Vector2.right * speed;
     targetVel.y = ApplyGravity(rb.linearVelocity.y);
     rb.linearVelocity = targetVel;
   }
 
-  private void Animation() {
-    anim.SetBool(Grounded, grounded);
-    anim.SetFloat(XVel, Mathf.Abs(rb.linearVelocity.x) / maxSpeed * 4);
-    anim.SetFloat(YVel, rb.linearVelocity.y);
-  }
 
-  public void EmitLandingPoof() {
-    poof.transform.localScale = new Vector3(1, 1, 1);
-    poof.Emit(1);
-    poof.transform.localScale = new Vector3(-1, 1, 1);
-    poof.Emit(1);
-  }
+  
 }

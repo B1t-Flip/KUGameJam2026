@@ -46,6 +46,7 @@ public class PlayerAnimationController : MonoBehaviour {
     poof.Emit(1);
     poof.transform.localScale = new Vector3(-1, 1, 1);
     poof.Emit(1);
+    SoundManager.PlaySound(SoundManager.SoundType.LAND);
   }
   
   private void OnMoved(int i) {
@@ -61,11 +62,25 @@ public class PlayerAnimationController : MonoBehaviour {
 
   private void OnCollisionStay2D(Collision2D other) {
     if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Artifact")) {
-      anim.SetBool(Pushing, Mathf.Abs(Vector2.Dot(other.contacts[0].point, new Vector2(PlayerController.dir, 0))) > 0.5f);
+      float yDisplacement = Mathf.Abs(transform.position.y - other.transform.position.y);
+      bool push = Mathf.Abs(Vector2.Dot(
+        other.contacts[0].point, new Vector2(PlayerController.dir, 0))) > 0.5f && 
+                  yDisplacement < 1f;
+      
+      anim.SetBool(Pushing, push);
+      if(push) SoundManager.LoopSound(SoundManager.SoundType.PUSH);
+      else SoundManager.StopLoop(SoundManager.SoundType.PUSH);
     }
   }
   private void OnCollisionExit2D(Collision2D other) {
-    if(other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Artifact"))
+    if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Artifact")) {
+      
       anim.SetBool(Pushing, false);
+      SoundManager.StopLoop(SoundManager.SoundType.PUSH);
+    }
+  }
+
+  private void StepSound() {
+    SoundManager.PlaySoundPitched(SoundManager.SoundType.STEP, .2f);
   }
 }

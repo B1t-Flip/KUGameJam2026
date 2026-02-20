@@ -14,10 +14,12 @@ public class Door : MonoBehaviour {
   public void OpenDoor() {
     coll.enabled = false;
     anim.SetBool(Open, true);
+    SoundManager.PlaySound(SoundManager.SoundType.DOOR_OPEN);
   }
 
   public void CloseDoor() {
     coll.enabled = true;
     anim.SetBool(Open, false);
+    SoundManager.PlaySound(SoundManager.SoundType.DOOR_CLOSE);
   }
 }

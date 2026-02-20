@@ -43,10 +43,10 @@ public class LaserRedirector : Box {
     RaycastHit2D hit = Physics2D.Raycast(
       transform.position, 
       targetPoint, 
-      100, 
+      1000, 
       layerMask);
     if (!hit) {
-      laserLine.SetPositions(new []{transform.position, transform.position + (Vector3)(Vector2)targetPoint * 100});
+      laserLine.SetPositions(new []{transform.position, transform.position + (Vector3)(Vector2)targetPoint * 1000});
       if(redirector) redirector.laserReceived = Vector2Int.zero;
       if(receiver) receiver.OnLaserLost();
       lastHit = new RaycastHit2D();

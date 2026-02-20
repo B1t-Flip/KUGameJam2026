@@ -12,17 +12,14 @@ public class PlayerAnimationController : MonoBehaviour {
   private PlayerController player;
   private Rigidbody2D rb;
   
-  private ParticleSystem poof;
-  private ParticleSystem splash1;
-  private ParticleSystem splash2;
+  [SerializeField] private ParticleSystem poof;
+  [SerializeField] private ParticleSystem splash1;
+  [SerializeField] private ParticleSystem splash2;
   
-  private void Awake() {
+  private void Start() {
     anim = GetComponent<Animator>();
     rb = GetComponent<Rigidbody2D>();
     player = GetComponent<PlayerController>();
-    poof = GetComponentsInChildren<ParticleSystem>()[0];
-    splash1 = GetComponentsInChildren<ParticleSystem>()[1];
-    splash2 = GetComponentsInChildren<ParticleSystem>()[2];
   }
 
   private void OnEnable() {
@@ -30,6 +27,13 @@ public class PlayerAnimationController : MonoBehaviour {
     PlayerController.PlayerFlipped += OnFlipped;
     PlayerController.PlayerMoved += OnMoved;
     PlayerController.PlayerLanded += OnLanded;
+  }
+  
+  private void OnDisable() {
+    PlayerController.PlayerJumped -= OnJump;
+    PlayerController.PlayerFlipped -= OnFlipped;
+    PlayerController.PlayerMoved -= OnMoved;
+    PlayerController.PlayerLanded -= OnLanded;
   }
   private void LateUpdate() {
     anim.SetBool(Grounded, player.grounded);

@@ -11,7 +11,7 @@ public class LevelTimer : MonoBehaviour {
   [SerializeField] private Slider[] sliders;
   [SerializeField] private TMP_Text text;
   
-  public static float timer;
+  public static float timer, inverseTimer;
 
   public static event PlayerController.Notify TimerFailed;
   private bool invoked;
@@ -38,6 +38,7 @@ public class LevelTimer : MonoBehaviour {
 
     if (!timerStarted) return;
     timer -= Time.deltaTime;
+    inverseTimer = -timer + levelTimer;
 
     if (timer > 0 || invoked) return;
     TimerFailed?.Invoke();

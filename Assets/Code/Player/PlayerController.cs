@@ -8,7 +8,7 @@ public class PlayerController : FlippableObject {
   public float maxSpeed;
   [SerializeField, Range(0,1)] private float drag;
   private float speed;
-  [HideInInspector] public bool grounded;
+  [HideInInspector] public bool grounded = true;
   private SpriteRenderer sprite;
   
   #region Controls

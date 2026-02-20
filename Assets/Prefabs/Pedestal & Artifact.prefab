@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7934027724976453217}
   - component: {fileID: 2163555129242952204}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Artifact (1)
   m_TagString: Artifact
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1200408465447506634}
   - component: {fileID: 5857505980208905602}
   - component: {fileID: 4703802615657468398}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pedestal
   m_TagString: Pedestal
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 7730626923891319216}
   - component: {fileID: 391563955494138941}
   - component: {fileID: 7265608164767911018}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Artifact
   m_TagString: Artifact
   m_Icon: {fileID: 0}

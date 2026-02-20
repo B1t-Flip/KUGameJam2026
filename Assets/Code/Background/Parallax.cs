@@ -17,5 +17,6 @@ public class Parallax : MonoBehaviour {
       float parallax = (float)i / go.Count;
       go[i].position = new Vector3(parallax * cam.position.x, go[i].position.y);
     }
+    //if(SaveManager.currentSave.simplistic)
   }
 }

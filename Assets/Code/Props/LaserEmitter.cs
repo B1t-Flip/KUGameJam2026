@@ -77,6 +77,10 @@ public class LaserEmitter : MonoBehaviour {
         redirect = receiver.transform.position;
         if(redirector) redirector.laserReceived = Vector2Int.zero;
         break;
+      default:
+        if(receiver) receiver.OnLaserLost();
+        if(redirector) redirector.laserReceived = Vector2Int.zero;
+        break;
     }
   }
 }

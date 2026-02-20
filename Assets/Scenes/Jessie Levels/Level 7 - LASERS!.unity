@@ -709,7 +709,7 @@ MonoBehaviour:
   flipped: 0
   gravity: 2
   canFlip: 0
-  flip: 0
+  spawnFlipped: 0
 --- !u!114 &823704183 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1688564249981659411, guid: 56915f7a6e2ffbd4aac33b58d592a782, type: 3}
@@ -58579,14 +58579,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Parallax
       objectReference: {fileID: 0}
-    - target: {fileID: 7835981588491732692, guid: 5cb5992e89c57d4429d8acaee3af6bdb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 593549190129675467, guid: 5cb5992e89c57d4429d8acaee3af6bdb, type: 3}
-    - {fileID: 1263637388790720887, guid: 5cb5992e89c57d4429d8acaee3af6bdb, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cb5992e89c57d4429d8acaee3af6bdb, type: 3}

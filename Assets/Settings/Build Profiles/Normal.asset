@@ -29,13 +29,13 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Jessie Levels/Level 3 - Box and Door.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 4 - Door Part 2.unity
+    m_path: Assets/Scenes/Jessie Levels/Level 4 - Movers.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 5 - Movers.unity
+    m_path: Assets/Scenes/Jessie Levels/Level 5 - SeeSaw.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 6 - SeeSaw.unity
+    m_path: Assets/Scenes/Jessie Levels/Level 6 - LASERS!.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 7 - LASERS!.unity
+    m_path: Assets/Scenes/Jessie Levels/Level 7 - LASERS! OVERDRIVE (Full Version).unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

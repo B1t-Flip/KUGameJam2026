@@ -34,10 +34,10 @@ public class LaserRedirector : Box {
       return;
     }
     Vector2Int targetPoint;
-
+    
     targetPoint = new(
-      directionFlipped ^ flipped ? laserReceived.y : -laserReceived.y, 
-      directionFlipped ^ flipped ? laserReceived.x : -laserReceived.x);
+      directionFlipped || flipped ? -laserReceived.y : laserReceived.y, 
+      directionFlipped || flipped ? -laserReceived.x : laserReceived.x);
     laserLine.enabled = true;
     RaycastHit2D hit = Physics2D.Raycast(
       transform.position, 

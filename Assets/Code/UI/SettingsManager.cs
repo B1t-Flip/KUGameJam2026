@@ -11,7 +11,7 @@ public class SettingsManager : MonoBehaviour {
   [SerializeField] private Material normalPalette, protanopia, deuteranopia, tritanopia, grayscale;
   [SerializeField] private Slider master, music, sfx;
   [SerializeField] private Toggle toggle;
-  private void OnEnable() {
+  public void OnEnable() {
     renderData.TryGetRendererFeature(out renderPass);
     SaveManager.Load(ref SaveManager.currentSave);
 

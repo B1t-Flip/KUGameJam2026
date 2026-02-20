@@ -20,25 +20,24 @@ public class LaserRedirector : Box {
     sprite = GetComponent<SpriteRenderer>();
     layerMask = LayerMask.GetMask("Default", "Laser");
   }
+
   private void FixedUpdate() {
     rb.linearVelocity = new Vector2(
       rb.linearVelocity.x * 0.9f,
       ApplyGravity(rb.linearVelocity.y));
-    
+
     sprite.flipX = directionFlipped;
     if (laserReceived == Vector2Int.zero) {
       laserLine.enabled = false;
-      if(redirector) redirector.laserReceived = Vector2Int.zero;
-      if(receiver) receiver.OnLaserLost();
+      if (redirector) redirector.laserReceived = Vector2Int.zero;
+      if (receiver) receiver.OnLaserLost();
       return;
     }
+    Vector2Int targetPoint;
 
-    Vector2Int targetPoint = new(
-      directionFlipped ? laserReceived.y : -laserReceived.y, 
-      directionFlipped ? -laserReceived.x : laserReceived.x);
-    targetPoint = new Vector2Int(
-      flipped ? -targetPoint.x : targetPoint.x, 
-      flipped ? -targetPoint.y : targetPoint.y);
+    targetPoint = new(
+      directionFlipped ^ flipped ? laserReceived.y : -laserReceived.y, 
+      directionFlipped ^ flipped ? laserReceived.x : -laserReceived.x);
     laserLine.enabled = true;
     RaycastHit2D hit = Physics2D.Raycast(
       transform.position, 

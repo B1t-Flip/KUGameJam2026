@@ -44,6 +44,7 @@ public class PlayerController : FlippableObject {
     rb.linearVelocity = new Vector3(rb.linearVelocity.x, (flipped ? -1 : 1) * jumpHeight);
     grounded = false;
     PlayerJumped?.Invoke(dir);
+    SoundManager.PlaySound(SoundManager.SoundType.JUMP);
   }
   private void OnMove(InputAction.CallbackContext ctx) {
     float horizontal = ctx.ReadValue<float>();

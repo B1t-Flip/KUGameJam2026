@@ -24,7 +24,7 @@ public class LaserEmitter : MonoBehaviour {
     RaycastHit2D hit = Physics2D.Raycast(
       transform.position, 
       direction, 
-      100, 
+      1000, 
       layerMask);
     if (!active) {
       if(receiver) receiver.OnLaserLost();
@@ -38,7 +38,7 @@ public class LaserEmitter : MonoBehaviour {
 
     laserLine.enabled = true;
     if (!hit) {
-      laserLine.SetPositions(new []{transform.position, transform.position + (Vector3)(Vector2)direction * 100});
+      laserLine.SetPositions(new []{transform.position, transform.position + (Vector3)(Vector2)direction * 1000});
       if(redirector) redirector.laserReceived = Vector2Int.zero;
       if(receiver) receiver.OnLaserLost();
       lastHit = new RaycastHit2D();

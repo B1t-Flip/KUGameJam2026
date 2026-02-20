@@ -30,6 +30,7 @@ public class FlippableObject : MonoBehaviour {
       transform.position.z);
     coll.isTrigger = true;
     flipped = !flipped;
+    SoundManager.PlaySound(SoundManager.SoundType.SPLASH);
     StartCoroutine(FlipAnimation(5, -height));
   }
 

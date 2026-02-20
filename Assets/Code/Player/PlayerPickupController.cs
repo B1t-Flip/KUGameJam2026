@@ -60,6 +60,7 @@ public class PlayerPickupController : MonoBehaviour {
       pickupDisplay.gameObject.SetActive(false);
       storedPickup = null;
       carryingSomething = false;
+      SoundManager.PlaySound(SoundManager.SoundType.LAND);
     }
     else if (currentTargetPickup) {
       storedPickup = currentTargetPickup;
@@ -72,6 +73,7 @@ public class PlayerPickupController : MonoBehaviour {
       pickupDisplay.gameObject.SetActive(true);
       pickupDisplay.sprite = storedPickup.GetComponent<SpriteRenderer>().sprite;
       carryingSomething = true;
+      SoundManager.PlaySound(SoundManager.SoundType.PICKUP);
     }
   }
 }

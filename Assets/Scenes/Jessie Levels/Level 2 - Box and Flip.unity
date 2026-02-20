@@ -297,7 +297,7 @@ MonoBehaviour:
   flipped: 0
   gravity: 2
   canFlip: 0
-  flip: 0
+  spawnFlipped: 0
 --- !u!1001 &781141692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57824,7 +57824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7961239270759250643, guid: ba6fa09b91b2cae4ca1767bd1bab51c1, type: 3}
       propertyPath: levelTimer
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

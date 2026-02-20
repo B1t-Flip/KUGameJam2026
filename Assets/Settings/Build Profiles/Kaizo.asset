@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 15003, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: New Windows Profile
+  m_Name: Kaizo
   m_EditorClassIdentifier: 
   m_AssetVersion: 1
   m_BuildTarget: 19
@@ -21,17 +21,15 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Main Menu.unity
+    m_path: Assets/Scenes/Kaizo Levels/Main Menu X.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 1 - Artifact.unity
+    m_path: Assets/Scenes/Kaizo Levels/Level 1X - KOBE.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 2 - Box and Flip.unity
+    m_path: Assets/Scenes/Kaizo Levels/Level 2X - Box and Skip.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 3 - Box and Door.unity
+    m_path: Assets/Scenes/Kaizo Levels/Level 3X - Box and Doors.unity
   - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 4 - Door Part 2.unity
-  - m_enabled: 1
-    m_path: Assets/Scenes/Jessie Levels/Level 5 - Movers.unity
+    m_path: Assets/Scenes/Kaizo Levels/Level 5X - Hoarding Problem.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

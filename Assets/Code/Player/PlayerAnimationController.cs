@@ -26,10 +26,10 @@ public class PlayerAnimationController : MonoBehaviour {
   }
 
   private void OnEnable() {
-    player.PlayerJumped += OnJump;
-    player.PlayerFlipped += OnFlipped;
-    player.PlayerMoved += OnMoved;
-    player.PlayerLanded += OnLanded;
+    PlayerController.PlayerJumped += OnJump;
+    PlayerController.PlayerFlipped += OnFlipped;
+    PlayerController.PlayerMoved += OnMoved;
+    PlayerController.PlayerLanded += OnLanded;
   }
   private void LateUpdate() {
     anim.SetBool(Grounded, player.grounded);
@@ -60,12 +60,12 @@ public class PlayerAnimationController : MonoBehaviour {
   }
 
   private void OnCollisionStay2D(Collision2D other) {
-    if (other.gameObject.CompareTag("Box")) {
-      anim.SetBool(Pushing, Mathf.Abs(Vector2.Dot(other.contacts[0].point, new Vector2(player.dir, 0))) > 0.5f);
+    if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Artifact")) {
+      anim.SetBool(Pushing, Mathf.Abs(Vector2.Dot(other.contacts[0].point, new Vector2(PlayerController.dir, 0))) > 0.5f);
     }
   }
   private void OnCollisionExit2D(Collision2D other) {
-    if(other.gameObject.CompareTag("Box"))
+    if(other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Artifact"))
       anim.SetBool(Pushing, false);
   }
 }

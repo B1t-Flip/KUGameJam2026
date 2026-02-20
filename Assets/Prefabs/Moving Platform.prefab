@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positions:
-  - {x: 5, y: 3}
-  - {x: 10, y: 3}
+  - {x: 5, y: 4}
+  - {x: 10, y: 4}
   speed: 0.5
 --- !u!212 &273952162679333640
 SpriteRenderer:

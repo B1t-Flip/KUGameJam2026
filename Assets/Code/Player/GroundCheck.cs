@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,13 +15,18 @@ public class GroundCheck : MonoBehaviour {
   private void Awake() => player = GetComponentInParent<PlayerController>();
   private void StartJumpFrameCount(int i) => jumpFrameCount = 5;
 
+  public delegate void PickupNotifier([CanBeNull] GameObject item);
+
+  public static event PickupNotifier StandingOnPickup;
+  
+  
   private void OnEnable() {
-    player.PlayerJumped += StartJumpFrameCount;
+    PlayerController.PlayerJumped += StartJumpFrameCount;
     flip.action.performed += FlipTarget;
   }
 
   private void OnDisable() {
-    player.PlayerJumped -= StartJumpFrameCount;
+    PlayerController.PlayerJumped -= StartJumpFrameCount;
     flip.action.performed -= FlipTarget;
   }
 
@@ -40,14 +46,32 @@ public class GroundCheck : MonoBehaviour {
   private void OnTriggerStay2D(Collider2D other){
     // use inverted ifs to reduce nesting
     player.canFlip = other.gameObject.CompareTag("Waterline");
-    if (other.gameObject.CompareTag("Box") && !flipTarget) flipTarget = other.GetComponent<FlippableObject>();
+    if (other.gameObject.CompareTag("Box") || 
+        other.gameObject.CompareTag("Artifact") ||
+        other.gameObject.CompareTag("Redirector")
+        ) 
+      StandingOnPickup?.Invoke(other.gameObject);
+    
+    if (other.gameObject.CompareTag("Box") || 
+        other.gameObject.CompareTag("Artifact") ||
+        other.gameObject.CompareTag("Redirector") && !flipTarget) flipTarget = other.GetComponent<FlippableObject>();
+    
     if (jumpFrameCount > 0 || !groundTags.Contains(other.gameObject.tag)) return;
     if(!player.grounded) player.Landed();
+    
     player.grounded = true;
   }
 
   private void OnTriggerExit2D(Collider2D other) {
-    if (other.gameObject.CompareTag("Box") && flipTarget) flipTarget = null;
+    if (other.gameObject.CompareTag("Box") || 
+        other.gameObject.CompareTag("Artifact") ||
+        other.gameObject.CompareTag("Redirector")
+        ) 
+      StandingOnPickup?.Invoke(null);
+    
+    if ((other.gameObject.CompareTag("Box") || 
+         other.gameObject.CompareTag("Artifact") ||
+         other.gameObject.CompareTag("Redirector")) && flipTarget) flipTarget = null;
     if (!groundTags.Contains(other.gameObject.tag) || !player.grounded) return;
     coyoteFrameCount = coyoteFrames;
     coyoteTime = true;

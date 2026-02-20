@@ -7,6 +7,10 @@ TagManager:
   - Ground
   - Waterline
   - Box
+  - Artifact
+  - Pedestal
+  - Redirector
+  - Receiver
   layers:
   - Default
   - TransparentFX
@@ -14,9 +18,9 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Interactable
+  - Laser
+  - WaterLine
   - 
   - 
   - 

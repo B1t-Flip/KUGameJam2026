@@ -34,6 +34,7 @@ public class Seesaw : MonoBehaviour {
     if (!other.gameObject.CompareTag("Player")) return;
     if (!player) player = other.gameObject.GetComponent<PlayerController>();
     if (!player.grounded) return;
+    if (transform.InverseTransformPoint(other.contacts[0].point).y < 0.25f) return;
     tampered = true;
     currentlyTouching = true;
     if(player.flipped) rb.linearVelocity -= Vector2.down * speed * Time.deltaTime;

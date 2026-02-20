@@ -31,6 +31,7 @@ public class MovingPlatform : MonoBehaviour {
     if (!other.gameObject.CompareTag("Player")) return;
     if (!player) player = other.gameObject.GetComponent<PlayerController>();
     if (!player.grounded) return;
+    if (transform.InverseTransformPoint(other.contacts[0].point).y < 0.25f) return;
     player.transform.position += (Vector3)rb.linearVelocity * Time.deltaTime;
   }
 }

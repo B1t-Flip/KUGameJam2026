@@ -22,10 +22,13 @@ public class WinPortal : MonoBehaviour {
     if (!other.CompareTag("Player")) return;
     if (!winCon) return;
     
-    FindFirstObjectByType<WinMenu>().OnWin();
+    FindFirstObjectByType<WinMenu>().OnWin(LevelTimer.inverseTimer);
     // you win
     int index = SceneManager.GetActiveScene().buildIndex;
-    SaveManager.currentSave.levelTimes[index - 1] = LevelTimer.inverseTimer;
+    if(SaveManager.currentSave.levelTimes[index - 1] == 0 ||
+       LevelTimer.inverseTimer < SaveManager.currentSave.levelTimes[index - 1])
+      SaveManager.currentSave.levelTimes[index - 1] = LevelTimer.inverseTimer;
+    
     if (SaveManager.currentSave.progression == index) SaveManager.currentSave.progression++;
     SaveManager.Save(SaveManager.currentSave);
   }

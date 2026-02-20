@@ -1,11 +1,11 @@
 using UnityEngine;
 
 public class Artifact : FlippableObject {
-  [SerializeField] private bool flip;
+  [SerializeField] private bool spawnFlipped;
 
   protected override void Start() {
     base.Start();
-    flipped = flip;
+    flipped = spawnFlipped;
     canFlip = false;
   }
 

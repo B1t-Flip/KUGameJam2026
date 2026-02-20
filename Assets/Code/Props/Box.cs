@@ -1,6 +1,13 @@
 using UnityEngine;
 
 public class Box : FlippableObject {
+  [SerializeField] private bool spawnFlipped;
+
+  protected override void Start() {
+    base.Start();
+    flipped = spawnFlipped;
+  }
+  
   private void OnCollisionStay2D(Collision2D other) {
     if(other.gameObject.CompareTag("Waterline")) canFlip = true;
   }

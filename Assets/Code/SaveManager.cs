@@ -39,4 +39,9 @@ public class SaveManager : MonoBehaviour {
     }
     catch (Exception e) { return false; }
   }
+
+  public static void ClearSave() {
+    Save(new  SaveData());
+    Load(ref currentSave);
+  }
 }
